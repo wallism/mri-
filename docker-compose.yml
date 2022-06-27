@@ -7,6 +7,13 @@ services:
     restart : unless-stopped
     networks:
       - docknet
+  zipkin:
+    container_name: "zipkin"
+    image: "openzipkin/zipkin"
+    ports:
+      - "9411:9411"
+    networks:
+      - docknet
 
   blazorapp:
     container_name: "blazorapp"
@@ -28,12 +35,14 @@ services:
     command: [ "./daprd", 
       "-app-id", "blazorapp", 
       "-app-port", "80",
-      "-components-path", "./components"
+      "-components-path", "./dapr/components",
+      "-config", "./dapr/config/config.yaml"
       ]
     volumes:
-      - "./dapr/components/:/components"
+      - "./dapr/:/dapr"
     depends_on:
       - blazorapp
+      - zipkin
     network_mode: "service:blazorapp"
 
   internal-api:
@@ -51,12 +60,14 @@ services:
     command: [ "./daprd", 
       "-app-id", "internal-api", 
       "-app-port", "80",
-      "-components-path", "./components"
+      "-components-path", "./dapr/components",
+      "-config", "./dapr/config/config.yaml"
       ]
     volumes:
-      - "./dapr/components/:/components"
+      - "./dapr/:/dapr"
     depends_on:
       - internal-api
+      - zipkin
     network_mode: "service:internal-api"
 
   public-api:
@@ -76,12 +87,14 @@ services:
     command: [ "./daprd", 
       "-app-id", "public-api", 
       "-app-port", "80",
-      "-components-path", "./components"
+      "-components-path", "./dapr/components",
+      "-config", "./dapr/config/config.yaml"
       ]
     volumes:
-      - "./dapr/components/:/components"
+      - "./dapr/:/dapr"
     depends_on:
       - public-api
+      - zipkin
     network_mode: "service:public-api"
 
 networks:
