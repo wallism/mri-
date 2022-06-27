@@ -1,0 +1,88 @@
+version: '3.4'
+
+services:
+  redis:
+    container_name: "redis"
+    image: redis
+    restart : unless-stopped
+    networks:
+      - docknet
+
+  blazorapp:
+    container_name: "blazorapp"
+    image: ${DOCKER_REGISTRY-}blazorapp
+    build:
+      context: .
+      dockerfile: BlazorApp/BlazorApp/Dockerfile
+    depends_on:
+      - redis
+    ports:
+      - "55000:443"
+    networks:
+      - docknet
+
+  blazorapp-dapr:
+    container_name: "blazorapp-dapr"
+    # The use of the latest tag isn't recommended for production scenarios. For production, it's better to use a specific version number.
+    image: "daprio/daprd:latest"
+    command: [ "./daprd", 
+      "-app-id", "blazorapp", 
+      "-app-port", "80",
+      "-components-path", "./components"
+      ]
+    volumes:
+      - "./dapr/components/:/components"
+    depends_on:
+      - blazorapp
+    network_mode: "service:blazorapp"
+
+  internal-api:
+    container_name: "internal-api"
+    image: ${DOCKER_REGISTRY-}internalapi
+    build:
+      context: .
+      dockerfile: internal-api/internal-api/Dockerfile
+    networks:
+      - docknet
+
+  internal-api-dapr:
+    container_name: "internal-api-dapr"
+    image: "daprio/daprd:latest"
+    command: [ "./daprd", 
+      "-app-id", "internal-api", 
+      "-app-port", "80",
+      "-components-path", "./components"
+      ]
+    volumes:
+      - "./dapr/components/:/components"
+    depends_on:
+      - internal-api
+    network_mode: "service:internal-api"
+
+  public-api:
+    container_name: "public-api"
+    image: ${DOCKER_REGISTRY-}publicapi
+    build:
+      context: .
+      dockerfile: public-api/public-api/Dockerfile
+    ports:
+      - "55001:443"
+    networks:
+      - docknet
+
+  public-api-dapr:
+    container_name: "public-api-dapr"
+    image: "daprio/daprd:latest"
+    command: [ "./daprd", 
+      "-app-id", "public-api", 
+      "-app-port", "80",
+      "-components-path", "./components"
+      ]
+    volumes:
+      - "./dapr/components/:/components"
+    depends_on:
+      - public-api
+    network_mode: "service:public-api"
+
+networks:
+  docknet:
