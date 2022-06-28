@@ -34,7 +34,7 @@ namespace internal_api.Controllers
         public async Task<IActionResult> CountChanged(Message message)
         {
             var text = $"{message.Text} -> Internal";
-            Console.WriteLine(message.Text);
+            Console.WriteLine(text);
             return Ok();
         }
     }
