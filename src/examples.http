@@ -1,0 +1,15 @@
+POST http://localhost:3500/v1.0/state/statestore
+Content-Type: application/json
+
+[{"key": "color","value": "red"}]
+
+###
+
+GET http://localhost:3500/v1.0/state/statestore/color
+
+###
+
+GET http://localhost:3500/v1.0/state/statestore/counter
+
+### 
+GET http://localhost:3500/v1.0/state/counter
