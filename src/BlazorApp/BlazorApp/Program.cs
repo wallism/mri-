@@ -1,10 +1,15 @@
+using BlazorApp;
 using BlazorApp.Data;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using Dapr.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDaprClient();
+
+
+builder.Services.AddHttpClient<IPublicApiService, PublicApiService>(c => 
+    new PublicApiService(DaprClient.CreateInvokeHttpClient("public-api")));
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();

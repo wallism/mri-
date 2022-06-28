@@ -13,24 +13,29 @@ namespace BlazorApp.Data
     public class HealthService : IHealthService
     {
         private readonly DaprClient _dapr;
+        private readonly IPublicApiService _publicApiService;
+
         const string StateStore = "statestore";
 
-        public HealthService(DaprClient dapr)
+        public HealthService(DaprClient dapr, IPublicApiService publicApiService)
         {
             _dapr = dapr;
+            _publicApiService = publicApiService;
         }
 
         public async Task<int> IncrementCount()
         {
-            // save to store then send to bus
             try
             {
                 var current = await GetCount();
                 current++;
+                // save to store then send to publicAPI
                 await _dapr.SaveStateAsync(StateStore, "counter", current);
-                var message = $"{current} -> {GetType().Name}.IncrementCount";
+                var message = $"{current} -> Blazor";
                 Console.WriteLine(message);
-                // send to pub sub
+
+                // call public API
+                await _publicApiService.SendCountMessage(message);
 
                 return current;
             }

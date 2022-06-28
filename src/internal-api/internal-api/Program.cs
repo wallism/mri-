@@ -17,8 +17,20 @@ var app = builder.Build();
     app.UseSwaggerUI();
 // }
 
+
+app.UseRouting();
 app.UseAuthorization();
 
-app.MapControllers();
+#region DAPR
+// needed because dapr messages get wrapped in 'cloudevents'
+app.UseCloudEvents();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapSubscribeHandler();
+    endpoints.MapControllers();
+});
+#endregion
+
 
 app.Run();

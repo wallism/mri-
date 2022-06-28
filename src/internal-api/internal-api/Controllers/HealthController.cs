@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Dapr;
+using Dapr.Client;
+using Microsoft.AspNetCore.Mvc;
 
 namespace internal_api.Controllers
 {
@@ -6,6 +8,13 @@ namespace internal_api.Controllers
     [Route("[controller]")]
     public class HealthController : ControllerBase
     {
+        private readonly DaprClient _dapr;
+
+        public HealthController(DaprClient dapr)
+        {
+            _dapr = dapr;
+        }
+
 
         [HttpGet("ping")]
         public string Get()
@@ -19,6 +28,20 @@ namespace internal_api.Controllers
             return Ok("all good");
         }
 
-        
+
+        [HttpPost("", Name = "CountChanged")]
+        [Topic("sample-pubsub", "CountChanged")]
+        public async Task<IActionResult> CountChanged(Message message)
+        {
+            var text = $"{message.Text} -> Internal";
+            Console.WriteLine(message.Text);
+            return Ok();
+        }
     }
+
+    public class Message
+    {
+        public string Text { get; set; }
+    }
+
 }
