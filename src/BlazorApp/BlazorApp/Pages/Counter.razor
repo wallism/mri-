@@ -3,34 +3,41 @@
 <PageTitle>Counter</PageTitle>
 
 @using BlazorApp.Data
-@inject IHealthService _healthService
+@inject ISampleService _sampleService
 
 <h1>Counter</h1>
 
 <p role="status">Current count: @_currentCount</p>
+<p role="status">Secret: @_secret</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 <button class="btn btn-primary" @onclick="ResetCount">Reset</button>
+<button class="btn btn-primary" @onclick="GetSecret">Secret</button>
 
 @code {
 
-    private int _currentCount = 0;    
+    private int _currentCount = 0;
+    private string _secret = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
-        _currentCount = await _healthService.GetCount();
+        _currentCount = await _sampleService.GetCount();
     }
 
 
     private async Task IncrementCount()
     {
-        _currentCount = await _healthService.IncrementCount();
+        _currentCount = await _sampleService.IncrementCount();
     }
 
     private async Task ResetCount()
     {
-        await _healthService.ResetCount();
+        await _sampleService.ResetCount();
         _currentCount = 0;
     }
 
+    private async Task GetSecret()
+    {
+        _secret = await _sampleService.GetSecret();
+    }
 }

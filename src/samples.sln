@@ -12,7 +12,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dapr", "dapr", "{F5774776-260F-4188-AB3D-2CE927C925D1}"
 	ProjectSection(SolutionItems) = preProject
 		dapr\config\config.yaml = dapr\config\config.yaml
+		dapr\components\localSecretStore.yml = dapr\components\localSecretStore.yml
 		dapr\components\pubsub.yaml = dapr\components\pubsub.yaml
+		dapr\components\secrets.json = dapr\components\secrets.json
 		dapr\components\statestore.yaml = dapr\components\statestore.yaml
 	EndProjectSection
 EndProject

@@ -35,8 +35,8 @@ services:
     command: [ "./daprd", 
       "-app-id", "blazorapp", 
       "-app-port", "80",
-      "-components-path", "./dapr/components",
-      "-config", "./dapr/config/config.yaml"
+      "-components-path", "/dapr/components",
+      "-config", "/dapr/config/config.yaml"
       ]
     volumes:
       - "./dapr/:/dapr"
@@ -60,8 +60,8 @@ services:
     command: [ "./daprd", 
       "-app-id", "internal-api", 
       "-app-port", "80",
-      "-components-path", "./dapr/components",
-      "-config", "./dapr/config/config.yaml"
+      "-components-path", "/dapr/components",
+      "-config", "/dapr/config/config.yaml"
       ]
     volumes:
       - "./dapr/:/dapr"
@@ -87,8 +87,8 @@ services:
     command: [ "./daprd", 
       "-app-id", "public-api", 
       "-app-port", "80",
-      "-components-path", "./dapr/components",
-      "-config", "./dapr/config/config.yaml"
+      "-components-path", "/dapr/components",
+      "-config", "/dapr/config/config.yaml"
       ]
     volumes:
       - "./dapr/:/dapr"

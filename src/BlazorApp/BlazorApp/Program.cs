@@ -14,7 +14,7 @@ builder.Services.AddHttpClient<IPublicApiService, PublicApiService>(c =>
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
-builder.Services.AddSingleton<IHealthService, HealthService>();
+builder.Services.AddSingleton<ISampleService, SampleService>();
 
 var app = builder.Build();
 
