@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using Dapr.Client;
+﻿using Dapr.Client;
+using Serilog;
 
 namespace BlazorApp.Data
 {
@@ -33,7 +33,7 @@ namespace BlazorApp.Data
                 // save to store then send to publicAPI
                 await _dapr.SaveStateAsync(StateStore, "counter", current);
                 var message = $"{current} -> Blazor";
-                Console.WriteLine(message);
+                Log.Warning(message);
 
                 // call public API
                 await _publicApiService.SendCountMessage(message);
@@ -42,7 +42,7 @@ namespace BlazorApp.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Log.Error(ex, "increment error");
                 return -1;
             }
 

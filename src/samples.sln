@@ -20,6 +20,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dapr", "dapr", "{F5774776-2
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{B9767345-BFDF-4A9F-A76A-CEDD11C4B4DA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "devops", "devops", "{FC6A79EC-3B53-4FB0-AEF8-A1F689BA18E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Utilities", "Common.Utilities\Common.Utilities.csproj", "{90A3B92E-9A0C-4315-B683-EFEA861DA126}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +46,10 @@ Global
 		{B9767345-BFDF-4A9F-A76A-CEDD11C4B4DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9767345-BFDF-4A9F-A76A-CEDD11C4B4DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9767345-BFDF-4A9F-A76A-CEDD11C4B4DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90A3B92E-9A0C-4315-B683-EFEA861DA126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90A3B92E-9A0C-4315-B683-EFEA861DA126}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90A3B92E-9A0C-4315-B683-EFEA861DA126}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90A3B92E-9A0C-4315-B683-EFEA861DA126}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

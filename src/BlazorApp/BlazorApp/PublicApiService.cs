@@ -1,4 +1,7 @@
-﻿namespace BlazorApp
+﻿using Common.Utilities.Models;
+using Serilog;
+
+namespace BlazorApp
 {
     public interface IPublicApiService
     {
@@ -16,13 +19,13 @@
 
         public async Task SendCountMessage(string text)
         {
-            var response = await _client.PostAsJsonAsync("health/count", new Message{Text = text});
-            Console.WriteLine(response.StatusCode);
+            var response = await _client.PostAsJsonAsync("health/count", new Message {Text = text});
+            if (response.IsSuccessStatusCode)
+                Log.Verbose("SendCountMessage succeeded");
+            else
+                Log.ForContext("StatusCode", response.StatusCode)
+                    .Warning("SendCountMessage failed");
         }
     }
-
-    public class Message
-    {
-        public string Text { get; set; }
-    }
+    
 }

@@ -1,6 +1,8 @@
-﻿using Dapr;
+﻿using Common.Utilities.Models;
+using Dapr;
 using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace internal_api.Controllers
 {
@@ -31,17 +33,17 @@ namespace internal_api.Controllers
 
         [HttpPost("", Name = "CountChanged")]
         [Topic("sample-pubsub", "CountChanged")]
-        public async Task<IActionResult> CountChanged(Message message)
+        public IActionResult CountChanged(Message message)
         {
             var text = $"{message.Text} -> Internal";
-            Console.WriteLine(text);
+
+            foreach (var h in Request.Headers)
+            {
+                if (h.Key == "traceparent")
+                    Log.Information("H: {key} {value}", h.Key, h.Value);
+            }
+            Log.Warning(text);
             return Ok();
         }
     }
-
-    public class Message
-    {
-        public string Text { get; set; }
-    }
-
 }

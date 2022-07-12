@@ -1,5 +1,7 @@
-﻿using Dapr.Client;
+﻿using Common.Utilities.Models;
+using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace public_api.Controllers
 {
@@ -30,28 +32,17 @@ namespace public_api.Controllers
         [HttpPost("count")]
         public async Task<IActionResult> PostCount(Message message)
         {
-            try
-            {
-                var text = $"{message.Text} -> Public";
-                Console.WriteLine(text);
-
-                // Publish
-                await _dapr.PublishEventAsync("sample-pubsub", "CountChanged", new Message { Text = text });
-
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                return Problem(ex.Message);
-            }
+            var text = $"{message.Text} -> Public";
+            // ForContext is a more succinct way to add log properties https://benfoster.io/blog/serilog-best-practices/
+            Log.ForContext("Service", "public-api")
+                .Warning(text);
+            
+            // Publish
+            await _dapr.PublishEventAsync("sample-pubsub", "CountChanged", new Message { Text = text });
+            
+            return Ok();
         }
 
     }
-
-    public class Message
-    {
-        public string Text { get; set; }
-    }
+    
 }
